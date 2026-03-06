@@ -1,0 +1,9 @@
+server:
+  port: 5443
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5440/profile_db
+    username: postgres
+    password: qewr
+  liquibase:
+    change-log: db/changelog/master-changelog.xml
