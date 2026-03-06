@@ -1,4 +1,7 @@
 package ru.vsu.cs.dto;
 
-public class ResponseProfileDto {
+public record ResponseProfileDto (
+        String name,
+        String surname
+) {
 }

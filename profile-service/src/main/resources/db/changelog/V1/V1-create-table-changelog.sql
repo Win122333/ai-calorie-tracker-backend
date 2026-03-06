@@ -12,6 +12,6 @@ CREATE TABLE t_user_profile (
     c_weight DECIMAL(5,2) CHECK (c_weight > 10 AND c_weight < 500),
     c_height SMALLINT CHECK (c_height > 50 AND c_height < 300),
     c_activity_level DECIMAL(4,3) NOT NULL DEFAULT 1.2,
-    id_target INTEGER REFERENCES profile_management.t_target(id),
+    id_target INTEGER REFERENCES t_target(id),
     c_weekly_budget DECIMAL(10,2) DEFAULT 0.0
 );

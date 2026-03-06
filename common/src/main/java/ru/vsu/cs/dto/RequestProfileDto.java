@@ -1,4 +1,7 @@
 package ru.vsu.cs.dto;
 
-public class RequestProfileDto {
+public record RequestProfileDto (
+        String name,
+        String surname
+) {
 }

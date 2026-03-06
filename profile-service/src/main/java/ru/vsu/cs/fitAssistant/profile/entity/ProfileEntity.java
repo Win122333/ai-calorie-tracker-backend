@@ -34,6 +34,6 @@ public class ProfileEntity {
     private Double weeklyBudget;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id_target")
     private TargetEntity target;
 }

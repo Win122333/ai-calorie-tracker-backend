@@ -7,6 +7,7 @@ import ru.vsu.cs.fitAssistant.profile.repository.ProfileRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +16,7 @@ public class ProfileService {
     public List<ProfileEntity> getAll() {
         return profileRepository.findAll();
     }
-    public Optional<ProfileEntity> getById(Long id) {
+    public Optional<ProfileEntity> getById(UUID id) {
         return profileRepository.findById(id);
     }
 }

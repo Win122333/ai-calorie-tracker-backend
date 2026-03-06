@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.vsu.cs.fitAssistant.profile.entity.ProfileEntity;
 
+import java.util.UUID;
+
 @Repository
-public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {
+public interface ProfileRepository extends JpaRepository<ProfileEntity, UUID> {
 }

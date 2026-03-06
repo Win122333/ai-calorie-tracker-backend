@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.vsu.cs.dto.ResponseProfileDto;
 import ru.vsu.cs.fitAssistant.profile.mapper.Mapper;
@@ -13,10 +14,12 @@ import ru.vsu.cs.fitAssistant.profile.service.ProfileService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Slf4j
-@RestController("/users/profile")
+@RestController
 @RequiredArgsConstructor
+@RequestMapping("/users/profile")
 public class ProfileController {
     private final ProfileService profileService;
     private final Mapper mapper;
@@ -27,8 +30,8 @@ public class ProfileController {
         return ResponseEntity.ok(
                 (profileService.getAll().stream().map(mapper::toResponse).toList()));
     }
-    @GetMapping("/{id\\d+}")
-    public ResponseEntity<ResponseProfileDto> getById(@PathVariable("id") Long id) {
+    @GetMapping("/{id:\\d+}")
+    public ResponseEntity<ResponseProfileDto> getById(@PathVariable("id") UUID id) {
         log.info("called GET /users/profile/{}", id);
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toResponse(
                 profileService.getById(id).orElseThrow(() ->
