@@ -39,7 +39,9 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak_server
-    command: start-dev
+    command:
+      - start-dev
+      - --import-realm
     restart: unless-stopped
     environment:
       KC_DB: postgres
@@ -50,6 +52,9 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_HTTP_ENABLED: "true"
       KC_HOSTNAME_STRICT: "false"
+    volumes:
+      # Пробрасываем наш JSON файл в папку импорта Keycloak
+      - ./fitassistant-realm.json:/opt/keycloak/data/import/realm.json:ro
     ports:
       - "5442:8080"
     depends_on:
