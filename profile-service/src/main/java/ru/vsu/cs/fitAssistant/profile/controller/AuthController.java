@@ -1,5 +1,6 @@
 package ru.vsu.cs.fitAssistant.profile.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,13 @@ import ru.vsu.cs.fitAssistant.profile.service.AuthService;
 public class AuthController {
     private final AuthService authService;
     @PostMapping("/reg")
-    public ResponseEntity<Void> register(@RequestBody RegistrationDto registrationDto) {
+    public ResponseEntity<Void> register(@RequestBody @Valid RegistrationDto registrationDto) {
         authService.register(registrationDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenResponseDto> login(@RequestBody @Valid LoginDto loginDto) {
         return ResponseEntity.ok(authService.login(loginDto));
     }
 }
