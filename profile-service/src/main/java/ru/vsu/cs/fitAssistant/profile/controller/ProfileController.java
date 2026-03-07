@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.vsu.cs.dto.ProfileUpdateDto;
 import ru.vsu.cs.dto.ResponseProfileDto;
 import ru.vsu.cs.fitAssistant.profile.mapper.Mapper;
 import ru.vsu.cs.fitAssistant.profile.service.ProfileService;
@@ -40,5 +39,14 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toResponse(
                 profileService.getById(principalUUID).orElseThrow(() ->
                 new NoSuchElementException("Ничего не найдено"))));
+    }
+    @PatchMapping("/me")
+    public ResponseEntity<ResponseProfileDto> update(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody ProfileUpdateDto dto
+            ) {
+        log.info("called update with dto {}", dto);
+        return ResponseEntity.ok(mapper.toResponse(profileService.update(
+                UUID.fromString(jwt.getSubject()), dto)));
     }
 }

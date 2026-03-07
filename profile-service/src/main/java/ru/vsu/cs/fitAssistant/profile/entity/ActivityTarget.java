@@ -1,16 +1,23 @@
 package ru.vsu.cs.fitAssistant.profile.entity;
 
 public enum ActivityTarget {
-    WEIGHT_GAIN("Набор веса"),
-    WEIGHT_LOSS("Сброс веса"),
-    WEIGHT_MAINTENANCE("Поддержание веса");
+    WEIGHT_GAIN,
+    WEIGHT_LOSS,
+    WEIGHT_MAINTENANCE;
 
 
-    private String description;
-    ActivityTarget(String description) {
-        this.description = description;
-    }
-    public String getDescription() {
-        return description;
+
+    public static ActivityTarget parseTarget(Integer i) {
+        switch(i) {
+            case 1 -> {
+                return WEIGHT_GAIN;
+            }
+            case 2 -> {
+                return WEIGHT_LOSS;
+            }
+            default -> {
+                return WEIGHT_MAINTENANCE;
+            }
+        }
     }
 }

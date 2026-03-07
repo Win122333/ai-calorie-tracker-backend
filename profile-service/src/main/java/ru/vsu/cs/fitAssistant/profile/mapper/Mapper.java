@@ -1,5 +1,6 @@
 package ru.vsu.cs.fitAssistant.profile.mapper;
 
+import ru.vsu.cs.dto.ProfileUpdateDto;
 import ru.vsu.cs.dto.RequestProfileDto;
 import ru.vsu.cs.dto.ResponseProfileDto;
 import ru.vsu.cs.fitAssistant.profile.entity.ProfileEntity;
