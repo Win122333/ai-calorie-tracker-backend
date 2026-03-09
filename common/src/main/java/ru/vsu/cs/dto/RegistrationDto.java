@@ -33,5 +33,8 @@ public record RegistrationDto(
         Double activityLevel,
 
         @NotNull(message = "Необходимо выбрать цель")
-        Integer targetId // ID из таблицы t_target
+        Integer targetId,
+
+        @NotNull(message = "Необходимо выбрать бюджет")
+        Double weeklyBudget
 ) {}
