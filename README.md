@@ -13,6 +13,10 @@ Docker & Docker Compose
 
 Thymeleaf (UI менеджера)
 
+Kafka
+
+Swagger
+
 Структура проекта 
 
 ```text
