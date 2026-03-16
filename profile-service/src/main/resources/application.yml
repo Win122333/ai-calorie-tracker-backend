@@ -1,0 +1,19 @@
+server:
+  port: 5443
+keycloak:
+  auth-server-url: http://localhost:5442
+  realm: FitAssistant
+  client-id: profile-app
+  client-secret: ufm1aCQ6Av2byKlhyhhVmdvT56BrN2l0
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5440/profile_db
+    username: postgres
+    password: qewr
+  liquibase:
+    change-log: db/changelog/master-changelog.xml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:5442/realms/FitAssistant
