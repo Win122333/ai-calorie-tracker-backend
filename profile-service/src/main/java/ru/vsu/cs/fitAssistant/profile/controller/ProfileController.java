@@ -2,8 +2,6 @@ package ru.vsu.cs.fitAssistant.profile.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.vsu.cs.dto.AiResponse;
 import ru.vsu.cs.dto.ProfileUpdateDto;
 import ru.vsu.cs.dto.ResponseProfileDto;
-import ru.vsu.cs.fitAssistant.profile.mapper.Mapper;
+import ru.vsu.cs.fitAssistant.profile.mapper.ProfileMapper;
 import ru.vsu.cs.fitAssistant.profile.service.ProfileService;
 
 import java.util.List;
@@ -36,7 +34,7 @@ import java.util.UUID;
 public class ProfileController {
 
     private final ProfileService profileService;
-    private final Mapper mapper;
+    private final ProfileMapper profileMapper;
 
     @Operation(summary = "Получить все профили", description = "Возвращает список всех профилей в системе (Требуются права администратора).")
     @ApiResponses(value = {
@@ -47,7 +45,7 @@ public class ProfileController {
     public ResponseEntity<List<ResponseProfileDto>> getAll() {
         log.info("called GET /api/v1/profile/getAll");
         return ResponseEntity.ok(
-                profileService.getAll().stream().map(mapper::toResponse).toList()
+                profileService.getAll().stream().map(profileMapper::toResponse).toList()
         );
     }
 
@@ -65,7 +63,7 @@ public class ProfileController {
         UUID principalUUID = UUID.fromString(jwt.getSubject());
         log.info("called GET /api/v1/profile/me for user: {}", principalUUID);
 
-        return ResponseEntity.ok(mapper.toResponse(
+        return ResponseEntity.ok(profileMapper.toResponse(
                 profileService.getById(principalUUID).orElseThrow(() ->
                         new NoSuchElementException("Профиль не найден"))));
     }
@@ -85,24 +83,25 @@ public class ProfileController {
         UUID principalUUID = UUID.fromString(jwt.getSubject());
         log.info("called PATCH /api/v1/profile/me with dto: {}", dto);
 
-        return ResponseEntity.ok(mapper.toResponse(
+        return ResponseEntity.ok(profileMapper.toResponse(
                 profileService.update(principalUUID, dto)));
     }
 
     @Operation(summary = "Сгенерировать рацион", description = "Запускает генерацию меню питания на основе параметров и бюджета текущего пользователя.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Меню успешно сгенерировано"),
+            @ApiResponse(responseCode = "202", description = "Меню успешно сгенерировано"),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
             @ApiResponse(responseCode = "500", description = "Ошибка внешнего AI сервиса")
     })
     @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/generate")
-    public ResponseEntity<AiResponse> generateAiResponse(
+    public ResponseEntity<List<AiResponse>> generateAiResponse(
             @Parameter(hidden = true) @AuthenticationPrincipal Jwt jwt
     ) {
         UUID principalUUID = UUID.fromString(jwt.getSubject());
         log.info("called POST /api/v1/profile/generate for user: {}", principalUUID);
 
-        return ResponseEntity.ok(profileService.generateAiResponse(principalUUID));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(profileService.generateAiResponse(principalUUID));
     }
 }
