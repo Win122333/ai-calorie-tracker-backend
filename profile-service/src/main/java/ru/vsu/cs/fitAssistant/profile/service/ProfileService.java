@@ -3,8 +3,10 @@ package ru.vsu.cs.fitAssistant.profile.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.vsu.cs.dto.AiResponse;
 import ru.vsu.cs.dto.ProfileUpdateDto;
 import ru.vsu.cs.fitAssistant.profile.entity.ProfileEntity;
+import ru.vsu.cs.fitAssistant.profile.exception.ProfileNotFoundException;
 import ru.vsu.cs.fitAssistant.profile.repository.ProfileRepository;
 import ru.vsu.cs.fitAssistant.profile.repository.TargetRepository;
 
@@ -27,7 +29,7 @@ public class ProfileService {
     @Transactional
     public ProfileEntity update(UUID id, ProfileUpdateDto dto) {
         ProfileEntity entityToUpdate = profileRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Profile with id not found"));
+                .orElseThrow(() -> new ProfileNotFoundException("Profile with id not found"));
         if (dto.height() != null)
             entityToUpdate.setHeight(dto.height());
         if (dto.activityLevel() != null)
@@ -39,6 +41,11 @@ public class ProfileService {
             entityToUpdate.setWeight(dto.weight());
         profileRepository.save(entityToUpdate);
         return entityToUpdate;
+    }
+    public AiResponse generateAiResponse(UUID id) {
+        ProfileEntity profile = profileRepository.findById(id)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile with id not found"));
+
     }
 //    public ResponseProfileDto calculate(UUID id) {
 //        ProfileEntity profile = getById(id).orElseThrow(() -> new NoSuchElementException("Profile with id not found"));
