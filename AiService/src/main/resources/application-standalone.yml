@@ -1,2 +1,13 @@
 server:
   port: 5444
+market:
+  base-url: http://localhost:5445
+spring:
+  ai:
+    openai:
+      api-key: ${OPENROUTER_API_KEY}
+      base-url: https://openrouter.ai/api
+      chat:
+        options:
+#          model: openrouter/free
+          model: openai/gpt-4o-mini

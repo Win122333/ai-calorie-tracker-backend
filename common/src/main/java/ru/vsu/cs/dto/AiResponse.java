@@ -1,4 +1,13 @@
 package ru.vsu.cs.dto;
 
-public record AiResponse() {
+import java.util.List;
+
+public record AiResponse(
+        List<String> products,
+        Double calories,
+        Double protein,
+        Double fats,
+        Double carbohydrates,
+        Double cost
+) {
 }
